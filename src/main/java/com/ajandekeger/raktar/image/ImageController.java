@@ -2,6 +2,7 @@ package com.ajandekeger.raktar.image;
 
 import com.ajandekeger.raktar.termek.Termek;
 import org.apache.catalina.filters.RemoteIpFilter;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -60,5 +61,22 @@ public class ImageController {
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(resource);
+    }
+
+
+    @CrossOrigin
+    @DeleteMapping("/deleteImage/{cikkszam}")
+    public void deleteImage(@PathVariable String cikkszam) throws IOException {
+        Image del = null;
+        for (Image var : imageRepository.findAll())
+        {
+            if (cikkszam.equals(var.cikkszam)){
+                del = var;
+            }
+        }
+        Path fileToDeletePath = Paths.get("src/main/resources/static/images/"+del.img);
+        Files.delete(fileToDeletePath);
+        imageRepository.delete(del);
+        System.out.println("deleted successfully");
     }
 }

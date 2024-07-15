@@ -62,4 +62,18 @@ public class TermekController {
         return termekRepository.save(new Termek(cikkszam, vonalkod, nev, img, eladarnetto, eladarbrutto, db, tipus, szin, meret, image));
     }
 
+    @CrossOrigin
+    @DeleteMapping("/deleteTermek/{id}")
+    public void deleteItem(@PathVariable String id){
+        Termek del = null;
+        for (Termek var : termekRepository.findAll())
+        {
+            if (id.equals(var.cikkszam)){
+                del = var;
+            }
+        }
+        termekRepository.delete(del);
+    }
+
+
 }
