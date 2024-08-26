@@ -37,6 +37,27 @@ public class ImageController {
     }
 
     @CrossOrigin
+    @PostMapping("/changeImage") public String changeImage( @RequestParam("file") MultipartFile file,@RequestParam("cikkszam") String cikkszam) throws IOException {
+        Image del = null;
+        for (Image var : imageRepository.findAll())
+        {
+            if (cikkszam.equals(var.cikkszam)){
+                del = var;
+            }
+        }
+        Path fileToDeletePath = Paths.get("src/main/resources/static/images/"+del.img);
+        Files.delete(fileToDeletePath);
+        imageRepository.delete(del);
+
+        StringBuilder fileNames = new StringBuilder();
+        Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, file.getOriginalFilename());
+        fileNames.append(file.getOriginalFilename());
+        Files.write(fileNameAndPath, file.getBytes());
+        imageRepository.save(new Image(fileNames.toString(), cikkszam));
+        return "imageupload/index";
+    }
+
+    @CrossOrigin
     @GetMapping(path="/images/all")
     public @ResponseBody Iterable<Image> getAllImage(){
 
@@ -64,6 +85,8 @@ public class ImageController {
     }
 
 
+
+
     @CrossOrigin
     @DeleteMapping("/deleteImage/{cikkszam}")
     public void deleteImage(@PathVariable String cikkszam) throws IOException {
@@ -73,6 +96,9 @@ public class ImageController {
             if (cikkszam.equals(var.cikkszam)){
                 del = var;
             }
+        }
+        if(del == null){
+            return;
         }
         Path fileToDeletePath = Paths.get("src/main/resources/static/images/"+del.img);
         Files.delete(fileToDeletePath);

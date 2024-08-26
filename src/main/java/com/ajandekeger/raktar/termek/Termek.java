@@ -7,12 +7,12 @@ import jakarta.persistence.Id;
 public class Termek {
 
     @Id
+    int id;
     String cikkszam;
 
     String vonalkod;
 
     String nev;
-    String img;
 
     Long eladarnetto;
 
@@ -20,36 +20,39 @@ public class Termek {
 
     int db;
 
+    int fogyas;
     String tipus;
 
     String szin;
 
     String meret;
 
-    String image;
     public Termek() {
     }
 
-    public Termek(String cikkszam, String vonalkod, String nev, String img, Long eladarnetto, Long eladarbrutto, int db, String tipus, String szin, String meret, String image) {
+    public Termek(String cikkszam, String vonalkod, String nev,Long eladarnetto, Long eladarbrutto, int db, int fogyas, String tipus, String szin, String meret) {
         this.cikkszam = cikkszam;
         this.vonalkod = vonalkod;
         this.nev = nev;
-        this.img = img;
         this.eladarnetto = eladarnetto;
         this.eladarbrutto = eladarbrutto;
         this.db = db;
+        this.fogyas = fogyas;
         this.tipus = tipus;
         this.szin = szin;
         this.meret = meret;
-        this.image = image;
     }
 
-    public String getImg() {
-        return img;
+    public int getId() {
+        return id;
     }
 
-    public void setImg(String img) {
-        this.img = img;
+    public int getFogyas() {
+        return fogyas;
+    }
+
+    public void setFogyas(int fogyas) {
+        this.fogyas = fogyas;
     }
 
     public String getCikkszam() {

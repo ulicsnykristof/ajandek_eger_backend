@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class TermekController {
@@ -31,14 +32,13 @@ public class TermekController {
 
 
     @CrossOrigin
-    @GetMapping("/all/{id}")
-    public List<Termek> show(@PathVariable String id){
-        String termekId = id;
+    @GetMapping("/all/{cikkszam}")
+    public List<Termek> show(@PathVariable String cikkszam){
         termek_list =termekRepository.findAll();
         List<Termek> tl = new ArrayList<>();
         for (Termek var : termek_list)
         {
-            if (termekId.equals(var.cikkszam)){
+            if (cikkszam.equals(var.cikkszam)){
                 tl.add(var);
             }
         }
@@ -51,15 +51,31 @@ public class TermekController {
         String cikkszam =body.get("cikkszam");
         String vonalkod = body.get("vonalkod");
         String nev = body.get("nev");
-        String img = body.get("img");
         Long eladarnetto = Long.parseLong(body.get("eladarnetto"));
         Long eladarbrutto = Long.parseLong(body.get("eladarbrutto"));
         int db = Integer.parseInt(body.get("db"));
+        int fogyas = Integer.parseInt(body.get("fogyas"));
         String tipus = body.get("tipus");
         String szin = body.get("szin");
         String meret = body.get("meret");
-        String image = "blob";
-        return termekRepository.save(new Termek(cikkszam, vonalkod, nev, img, eladarnetto, eladarbrutto, db, tipus, szin, meret, image));
+        return termekRepository.save(new Termek(cikkszam, vonalkod, nev, eladarnetto, eladarbrutto, db, fogyas, tipus, szin, meret));
+    }
+
+    @CrossOrigin
+    @PostMapping("/updateTermek")
+    public void updateItem(@RequestBody Map<String, String> body){
+        Optional<Termek> temp = termekRepository.findById(Integer.parseInt(body.get("id")));
+        temp.get().setCikkszam(body.get("cikkszam"));
+        temp.get().setNev(body.get("nev"));
+        temp.get().setVonalkod(body.get("vonalkod"));
+        temp.get().setEladarnetto(Long.parseLong(body.get("eladarnetto")));
+        temp.get().setEladarbrutto(Long.parseLong(body.get("eladarbrutto")));
+        temp.get().setDb(Integer.parseInt(body.get("db")));
+        temp.get().setFogyas(Integer.parseInt(body.get("fogyas")));
+        temp.get().setTipus(body.get("tipus"));
+        temp.get().setSzin(body.get("szin"));
+        temp.get().setMeret(body.get("meret"));
+        termekRepository.save(temp.get());
     }
 
     @CrossOrigin
