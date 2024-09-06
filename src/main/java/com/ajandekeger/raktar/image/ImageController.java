@@ -45,9 +45,12 @@ public class ImageController {
                 del = var;
             }
         }
-        Path fileToDeletePath = Paths.get("src/main/resources/static/images/"+del.img);
-        Files.delete(fileToDeletePath);
-        imageRepository.delete(del);
+        if(del != null){
+            Path fileToDeletePath = Paths.get("src/main/resources/static/images/"+del.img);
+            Files.delete(fileToDeletePath);
+            imageRepository.delete(del);
+
+        }
 
         StringBuilder fileNames = new StringBuilder();
         Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, file.getOriginalFilename());

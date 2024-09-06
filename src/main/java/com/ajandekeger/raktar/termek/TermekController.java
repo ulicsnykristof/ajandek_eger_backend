@@ -1,5 +1,6 @@
 package com.ajandekeger.raktar.termek;
 
+import com.ajandekeger.raktar.charts.TermekTipus;
 import com.ajandekeger.raktar.image.Image;
 import org.apache.catalina.filters.RemoteIpFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,35 @@ public class TermekController {
             }
         }
         return tl;
+    }
+
+    @CrossOrigin
+    @GetMapping(path="/chartTermekTipus")
+    public @ResponseBody Iterable<TermekTipus> getAllTermekTipus(){
+
+        termek_list =termekRepository.findAll();
+        List<TermekTipus> ttl = new ArrayList<>();
+        boolean voltmar = false;
+
+        for (Termek termek : termek_list)
+        {   voltmar = false;
+            for (TermekTipus termekTipus : ttl)
+            {
+                if (termekTipus.getId().equals(termek.getTipus()))
+                {
+                    termekTipus.setValue(termekTipus.getValue() + termek.getDb());
+                    voltmar = true;
+                }
+            }
+            if(!voltmar)
+            {
+                TermekTipus tt = new TermekTipus(termek.getTipus(), termek.getTipus(), termek.getDb());
+                ttl.add(tt);
+
+            }
+
+        }
+        return ttl;
     }
 
     @CrossOrigin
