@@ -27,7 +27,7 @@ public class ImageController {
 
     private List<Image> image_list;
     @CrossOrigin
-    @PostMapping("/uploadImage") public String uploadImage( @RequestParam("file") MultipartFile file,@RequestParam("cikkszam") String cikkszam) throws IOException {
+    @PostMapping("public/uploadImage") public String uploadImage( @RequestParam("file") MultipartFile file,@RequestParam("cikkszam") String cikkszam) throws IOException {
         StringBuilder fileNames = new StringBuilder();
         Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, file.getOriginalFilename());
         fileNames.append(file.getOriginalFilename());
@@ -37,7 +37,7 @@ public class ImageController {
     }
 
     @CrossOrigin
-    @PostMapping("/changeImage") public String changeImage( @RequestParam("file") MultipartFile file,@RequestParam("cikkszam") String cikkszam) throws IOException {
+    @PostMapping("public/changeImage") public String changeImage( @RequestParam("file") MultipartFile file,@RequestParam("cikkszam") String cikkszam) throws IOException {
         Image del = null;
         for (Image var : imageRepository.findAll())
         {
@@ -61,14 +61,14 @@ public class ImageController {
     }
 
     @CrossOrigin
-    @GetMapping(path="/images/all")
+    @GetMapping(path="public/images/all")
     public @ResponseBody Iterable<Image> getAllImage(){
 
         return imageRepository.findAll();
     }
 
     @CrossOrigin
-    @GetMapping("/images/{cikkszam}")
+    @GetMapping("public/images/{cikkszam}")
     public ResponseEntity<Resource> getImage(@PathVariable String cikkszam) throws Exception {
         String kep = "";
         image_list = imageRepository.findAll();
@@ -91,7 +91,7 @@ public class ImageController {
 
 
     @CrossOrigin
-    @DeleteMapping("/deleteImage/{cikkszam}")
+    @DeleteMapping("public/deleteImage/{cikkszam}")
     public void deleteImage(@PathVariable String cikkszam) throws IOException {
         Image del = null;
         for (Image var : imageRepository.findAll())

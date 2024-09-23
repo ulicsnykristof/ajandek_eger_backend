@@ -1,16 +1,8 @@
 package com.ajandekeger.raktar.termek;
 
 import com.ajandekeger.raktar.charts.TermekTipus;
-import com.ajandekeger.raktar.image.Image;
-import org.apache.catalina.filters.RemoteIpFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +16,7 @@ public class TermekController {
 
     private List<Termek> termek_list;
     @CrossOrigin
-    @GetMapping(path="/all")
+    @GetMapping(path="public/all")
     public @ResponseBody Iterable<Termek> getAllTermek(){
 
         return termekRepository.findAll();
@@ -33,7 +25,7 @@ public class TermekController {
 
 
     @CrossOrigin
-    @GetMapping("/all/{cikkszam}")
+    @GetMapping("public/all/{cikkszam}")
     public List<Termek> show(@PathVariable String cikkszam){
         termek_list =termekRepository.findAll();
         List<Termek> tl = new ArrayList<>();
@@ -47,7 +39,7 @@ public class TermekController {
     }
 
     @CrossOrigin
-    @GetMapping(path="/chartTermekTipus")
+    @GetMapping(path="public/chartTermekTipus")
     public @ResponseBody Iterable<TermekTipus> getAllTermekTipus(){
 
         termek_list =termekRepository.findAll();
@@ -76,7 +68,7 @@ public class TermekController {
     }
 
     @CrossOrigin
-    @PostMapping("/addTermek")
+    @PostMapping("public/addTermek")
     public Termek create(@RequestBody Map<String, String> body){
         String cikkszam =body.get("cikkszam");
         String vonalkod = body.get("vonalkod");
@@ -92,7 +84,7 @@ public class TermekController {
     }
 
     @CrossOrigin
-    @PostMapping("/updateTermek")
+    @PostMapping("public/updateTermek")
     public void updateItem(@RequestBody Map<String, String> body){
         Optional<Termek> temp = termekRepository.findById(Integer.parseInt(body.get("id")));
         temp.get().setCikkszam(body.get("cikkszam"));
@@ -109,7 +101,7 @@ public class TermekController {
     }
 
     @CrossOrigin
-    @DeleteMapping("/deleteTermek/{id}")
+    @DeleteMapping("public/deleteTermek/{id}")
     public void deleteItem(@PathVariable String id){
         Termek del = null;
         for (Termek var : termekRepository.findAll())
